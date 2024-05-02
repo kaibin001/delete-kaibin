@@ -14,6 +14,17 @@ upcoming_events = pd.read_csv(upcoming_events_path)
 fight_demo_path = "Test_cases.csv"
 fight_demo = pd.read_csv(fight_demo_path)
 
+def process_features(fighter1, fighter2):
+    # Process features for the model
+    features_f1 = fight_events.loc[fight_events['Fighter1'] == fighter1].iloc[:, 7:20].iloc[0:1, :]
+    features_f2 = fight_events.loc[fight_events['Fighter2'] == fighter2].iloc[:, 20:].iloc[0:1, :]
+    features = pd.concat([features_f1.reset_index(drop=True), features_f2.reset_index(drop=True)], axis=1)
+    percentage_features = ['Win Rate (Fighter 1)', 'Str. Acc. (Fighter 1)', 'Str. Def (Fighter 1)', 'TD Acc. (Fighter 1)', 'TD Def. (Fighter 1)', 
+                           'Win Rate (Fighter 2)', 'Str. Acc. (Fighter 2)', 'Str. Def (Fighter 2)', 'TD Acc. (Fighter 2)', 'TD Def. (Fighter 2)']
+    for feature in percentage_features:
+        features[feature] = features[feature].str.rstrip('%').astype('float') / 100
+    return features
+    
 st.title("UFC Fight Predictor")
 
 # Upcoming fights display
@@ -40,10 +51,15 @@ if st.button("Predict Winner"):
     if not fighter1 or not fighter2:
         st.error("Please select both fighters.")
     else:
+        # Assuming you have a function to process input features
+        input_features = process_features(fighter1, fighter2)
+        # st.write("Shape of the input features:", input_features.shape)  # Check the shape
+        
+        # Ensure input_features is two-dimensional
+        if len(input_features.shape) == 3 and input_features.shape[0] == 1:
+            input_features = input_features.reshape(1, -1)
         
         st.write(fighter1, " VS ", fighter2)
-        
-        # Make predictions using the loaded model
-        prediction = predict_model(model, data=fight_events[fight_events["Fighter1"]==fighter1])
-        winner = f"Prediction: Fighter 1, {fighter1} Wins!" if prediction.iloc[0,-2] == "Win" else f"Prediction: Fighter 2, {fighter2}  Wins!"
+        prediction = model.predict(input_features)  # Make sure input_features is correctly shaped
+        winner = f"Prediction: Fighter 1, {fighter1} Wins!" if prediction == 1 else f"Prediction: Fighter 2, {fighter2}  Wins!"
         st.success(winner)
