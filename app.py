@@ -5,7 +5,7 @@ from pycaret.classification import *
 # Load the model and data
 model = load_model('model')
 
-fight_events_path = "data-v2.csv"
+fight_events_path = "new_fight_detail_full.csv"
 fight_events = pd.read_csv(fight_events_path)
 
 upcoming_events_path = "upcoming_events.csv"
