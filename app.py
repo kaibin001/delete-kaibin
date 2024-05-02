@@ -11,11 +11,17 @@ fight_events = pd.read_csv(fight_events_path)
 upcoming_events_path = "upcoming_events.csv"
 upcoming_events = pd.read_csv(upcoming_events_path)
 
+fight_demo_path = "Test_case.csv"
+fight_demo = pd.read_csv(fight_demo_path)
+
 st.title("UFC Fight Predictor")
 
 # Upcoming fights display
 upcoming_events['Matchup'] = upcoming_events['Fighter1'] + ' vs ' + upcoming_events['Fighter2']
 st.sidebar.write("Upcoming Events", upcoming_events[['Matchup']])
+
+fight_demo['Demo Matchup'] = fight_demo['Fighter1'] + ' vs ' + fight_demo['Fighter2']
+st.sidebar.write("Matchup", fight_demo[['Demo Matchup']])
 
 # Fighter Selection
 fighter_names = sorted(fight_events['Fighter1'].dropna().unique())
