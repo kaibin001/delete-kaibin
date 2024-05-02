@@ -11,7 +11,7 @@ fight_events = pd.read_csv(fight_events_path)
 upcoming_events_path = "upcoming_events.csv"
 upcoming_events = pd.read_csv(upcoming_events_path)
 
-fight_demo_path = "Test_case.csv"
+fight_demo_path = "Test_cases.csv"
 fight_demo = pd.read_csv(fight_demo_path)
 
 st.title("UFC Fight Predictor")
