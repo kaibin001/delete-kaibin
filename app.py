@@ -18,7 +18,7 @@ st.title("UFC Fight Predictor")
 
 # Upcoming fights display
 upcoming_events['Matchup'] = upcoming_events['Fighter1'] + ' vs ' + upcoming_events['Fighter2']
-st.sidebar.write("Upcoming Events", upcoming_events[['Matchup']])
+st.sidebar.write("UFC 301", upcoming_events[['Matchup']])
 
 fight_demo['Demo Matchup'] = fight_demo['Fighter1'] + ' vs ' + fight_demo['Fighter2']
 st.sidebar.write("Matchup", fight_demo[['Demo Matchup']])
