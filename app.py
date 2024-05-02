@@ -8,7 +8,7 @@ model = load_model('model')
 fight_events_path = "data-v2.csv"
 fight_events = pd.read_csv(fight_events_path)
 
-upcoming_events_path = "test-predictions.csv"
+upcoming_events_path = "upcoming_events.csv"
 upcoming_events = pd.read_csv(upcoming_events_path)
 
 st.title("UFC Fight Predictor")
