@@ -5,7 +5,7 @@ from pycaret.classification import *
 # Load the model and data
 model = load_model('model')
 
-fight_events_path = "new_fight_detail_full.csv"
+fight_events_path = "data-v2.csv"
 fight_events = pd.read_csv(fight_events_path)
 
 upcoming_events_path = "upcoming_events.csv"
@@ -13,17 +13,6 @@ upcoming_events = pd.read_csv(upcoming_events_path)
 
 fight_demo_path = "Test_cases.csv"
 fight_demo = pd.read_csv(fight_demo_path)
-
-def process_features(fighter1, fighter2):
-    # Process features for the model
-    features_f1 = fight_events.loc[fight_events['Fighter1'] == fighter1].iloc[:, 7:20].iloc[0:1, :]
-    features_f2 = fight_events.loc[fight_events['Fighter2'] == fighter2].iloc[:, 20:].iloc[0:1, :]
-    features = pd.concat([features_f1.reset_index(drop=True), features_f2.reset_index(drop=True)], axis=1)
-    percentage_features = ['Win Rate (Fighter 1)', 'Str. Acc. (Fighter 1)', 'Str. Def (Fighter 1)', 'TD Acc. (Fighter 1)', 'TD Def. (Fighter 1)', 
-                           'Win Rate (Fighter 2)', 'Str. Acc. (Fighter 2)', 'Str. Def (Fighter 2)', 'TD Acc. (Fighter 2)', 'TD Def. (Fighter 2)']
-    for feature in percentage_features:
-        features[feature] = features[feature].str.rstrip('%').astype('float') / 100
-    return features
     
 st.title("UFC Fight Predictor")
 
@@ -53,10 +42,8 @@ if st.button("Predict Winner"):
     else:
         
         st.write(fighter1, " VS ", fighter2)
-
-        process_f = process_features(model, data=fight_events[fight_events["Fighter1"]==fighter1])
-        
+ 
         # Make predictions using the loaded model
-        prediction = predict_model(process_f)
+        prediction = predict_model(model, data=fight_events[fight_events["Fighter1"]==fighter1])
         winner = f"Prediction: Fighter 1, {fighter1} Wins!" if prediction.iloc[0,-2] == "Win" else f"Prediction: Fighter 2, {fighter2}  Wins!"
         st.success(winner)
