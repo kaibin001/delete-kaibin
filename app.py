@@ -53,8 +53,10 @@ if st.button("Predict Winner"):
     else:
         
         st.write(fighter1, " VS ", fighter2)
+
+        process_f = process_features(model, data=fight_events[fight_events["Fighter1"]==fighter1])
         
         # Make predictions using the loaded model
-        prediction = predict_model(model, data=fight_events[fight_events["Fighter1"]==fighter1])
+        prediction = predict_model(process_f)
         winner = f"Prediction: Fighter 1, {fighter1} Wins!" if prediction.iloc[0,-2] == "Win" else f"Prediction: Fighter 2, {fighter2}  Wins!"
         st.success(winner)
